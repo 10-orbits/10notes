@@ -1,0 +1,32 @@
+a{
+  text-decoration: none;
+   color:inherit;
+}
+.note,.create-note{
+  height:120px;
+}
+.create-note{
+  font-weight: bold;
+  font-size: 50px;
+  color: #ffffffaa;
+  border-style: dashed;
+  border-width:thick;
+  cursor: pointer;
+}
+.row [class*='col-'] {
+  transition: all 0.3s ease-in-out, max-width .5s ease-in-out;
+}
+div[contenteditable="true"]:focus{
+  border:0px solid #ffffffaa;
+  outline: none;
+}
+div[contentEditable=true]:empty:not(:focus):before {
+  content: attr(placeholder-text)
+}
+.note:focus-within{
+  background-color: #ffffff77;
+}
+.note-content{
+  transition: opacity 5s ease-in-out
+}
+
