@@ -23,7 +23,7 @@ function ContentEditable(props){
         onInput={saveEdits}
         contentEditable={(editable)?'true':false}
         suppressContentEditableWarning={true}
-        style={{opacity:props.opacity}} placeholder-text={props.placeholder}>{props.html}</div>
+        style={{opacity:props.opacity}} placeholder-text={props.placeholder} dangerouslySetInnerHTML={{__html: props.html}}/>
     )
 }
 
