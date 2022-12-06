@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getIndex } from "../Helpers/Helper";
-
+import { stripHtml } from "string-strip-html";
 function ContentEditable(props){
     //const[ihtml,setHtml]=useState(props.html)
     const[editable,setEditable]=useState(false)
@@ -13,7 +13,8 @@ function ContentEditable(props){
         const idx=getIndex(notes,props.id)
         
         let note_to_update=notes[idx];
-        note_to_update.html=e.target.innerHTML
+        note_to_update.html=stripHtml(e.target.innerHTML,{ignoreTags:['br','div']}).result
+        //note_to_update.html=e.target.innerHTML
         notes[idx]=note_to_update
         localStorage.setItem("Notes", JSON.stringify(notes));
     }
