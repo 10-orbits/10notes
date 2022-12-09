@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import Confirm from "./Confirm";
 import Note, { CreateNote } from "./Note"
 import {v4 as uuid} from 'uuid';
 import { getIndex } from "../Helpers/Helper";
+import update from 'immutability-helper'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
  function Notes(){
     const data = JSON.parse(localStorage.getItem("Notes"));
@@ -56,17 +59,32 @@ import { getIndex } from "../Helpers/Helper";
         if(creating===true){
             setCreating(false)
             notes[0].opacity=1
-            setNotes(notes)
+            
         }
+        setNotes(notes)
       }, [notes,creating]);
+
+      const moveCard = useCallback((dragIndex, hoverIndex) => {
+        const notes = JSON.parse(localStorage.getItem("Notes"));
+        setNotes((prevCards) =>
+          update(notes, {
+            $splice: [
+              [dragIndex, 1],
+              [hoverIndex, 0, notes[dragIndex]],
+            ],
+          }),
+        )
+      }, [])
       
     return (
        <>
         <CreateNote createNewNote={createNewNote}></CreateNote>
+        <DndProvider backend={HTML5Backend}>
         {
             
-            notes.map((note)=>(<Note color={note.color} opacity={note.opacity} placeholder={defaultText} key={note.id} html={note.html} id={note.id} confirmDelete={confirmDelete} />))
+            notes.map((note,i)=>(<Note index={i} moveCard={moveCard} color={note.color} opacity={note.opacity} placeholder={defaultText} key={note.id} html={note.html} id={note.id} confirmDelete={confirmDelete} />))
         }
+        </DndProvider>
         <Confirm
         show={modalShow}
         onHide={confirmHide}
